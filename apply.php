@@ -61,9 +61,16 @@ $application = new Newstudent();
                 <label class="checkbox-wrapper">
                     <input type="checkbox" class="checkbox-input" name="courses[]" value="<?= $courseId ?>">
                     <span class="checkbox-tile">
+                      <?php
+                      $time = strtotime($row['Time']);
+                      $period = strtotime($row['Period']);
+                      $secs = $period-strtotime("00:00:00");
+                      $result = date("H:i:s",$time+$secs);
+                      ?>
                         <span class="checkbox-icon"><i class="fa-solid fa-book"></i></span>
                         <span class="checkbox-label" style="font-size: 10px"><?= $row['Name'] ?></span>
                         <span class="checkbox-label" style="font-size: 10px">Dr. <?= $drname ?></span>
+                        <span class="checkbox-label" style="font-size: 10px"><?= $row['Day'] . " ( " . $row['Time'] . " -> " . $result  ?></span>
                     </span>
                 </label>
             </div>
