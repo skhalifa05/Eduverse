@@ -3,136 +3,216 @@ require_once "./DB/attendance_db.php";
 require_once "./Models/newstudent.php";
 
 $application = new Newstudent();
+?>
 
-if (isset($_POST['appsub'])) {
-    $Scourses = ($_POST);
-    if (sizeof($Scourses)>2) {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Apply</title>
+    <link rel="stylesheet" href="./Views/CSS/apply.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://kit.fontawesome.com/590c731183.js" crossorigin="anonymous"></script>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-        foreach ($Scourses as $course) {
-            foreach ($Scourses as $course2) {
-                if ($course2 <= $course || $course == null) {
-
-                } else {
-                    $data_array = $application->GetCourseTimeInfo($conn, $course);
-                    $time = strtotime($data_array['Time']);
-                    $period = strtotime($data_array['Period']);
-                    $secs = $period - strtotime("00:00:00");
-                    $result = date("H:i:s", $time + $secs);
-                    echo $course . '-' . $course2 . '<br>';
-                    if ($application->checkcourseconflict($conn, $data_array['Day'], $data_array['Time'], $result, $course2)) {
-                        echo 'ok <br>';
-                    } else {
-                        $_REQUEST = array();
-                        // Redirect to the same page to refresh
-                        header("Location: ".$_SERVER['PHP_SELF']."?Timeconflict&course1=".$course."&Course2=".$course2);
-                    }
-
-                }
-            }
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <style>
+        /* Simple modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 99;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
         }
-    }
-    else{
-        $ocourse = array_values($Scourses)[0];
-    }
+        .modal-content {
+            background: #fff;
+            padding: 2em;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+        }
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
 
-}
-else{
-   ?>
-    <!DOCTYPE html>
-    <html lang="en">
+<form id="courseForm" onsubmit="event.preventDefault(); showModal();">
+    <fieldset class="checkbox-group">
+        <legend class="checkbox-group-legend">Choose Courses</legend>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <!----======== CSS ======== -->
-        <link rel="stylesheet" href="./Views/CSS/apply.css">
-        <!----===== Iconscout CSS ===== -->
-        <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-        <script src="https://kit.fontawesome.com/590c731183.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.11.0/sweetalert2.css" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.11.0/sweetalert2.all.min.js"></script>
-        <title>Admin-Home</title>
-    </head>
-    <body>
-<form method="post">
-<fieldset class="checkbox-group">
-        <legend class="checkbox-group-legend">Choose your favorites</legend>
-
-    <?php
-    $data = $application->ReturnCourses($conn);
-    $i=1;
-    while($row = $data->fetch_assoc()){
-        $drname = $application->GetDoctorName($conn, $row['Course_ID']);
-        ?>
-        <div class="checkbox">
-            <label class="checkbox-wrapper">
-                <input type="checkbox" id=<?php echo $row['Name'].$i?> class="checkbox-input" onchange="Addtolist(<?php echo $row['Name'].$i?>)" name=<?php echo $row['Name'].$i?> value=<?php echo $row['Course_ID']?>>
-                <span class="checkbox-tile">
-				<span class="checkbox-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="currentColor" viewBox="0 0 256 256">
-						<rect width="256" height="256" fill="none"></rect>
-						<circle cx="96" cy="144.00002" r="10"></circle>
-						<circle cx="160" cy="144.00002" r="10"></circle>
-						<path d="M74.4017,80A175.32467,175.32467,0,0,1,128,72a175.32507,175.32507,0,0,1,53.59754,7.99971" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path>
-						<path d="M181.59717,176.00041A175.32523,175.32523,0,0,1,128,184a175.32505,175.32505,0,0,1-53.59753-7.99971" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path>
-						<path d="M155.04392,182.08789l12.02517,24.05047a7.96793,7.96793,0,0,0,8.99115,4.20919c24.53876-5.99927,45.69294-16.45908,61.10024-29.85086a8.05225,8.05225,0,0,0,2.47192-8.38971L205.65855,58.86074a8.02121,8.02121,0,0,0-4.62655-5.10908,175.85294,175.85294,0,0,0-29.66452-9.18289,8.01781,8.01781,0,0,0-9.31925,5.28642l-7.97318,23.91964" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path>
-						<path d="M100.95624,182.08757l-12.02532,24.0508a7.96794,7.96794,0,0,1-8.99115,4.20918c-24.53866-5.99924-45.69277-16.459-61.10006-29.85069a8.05224,8.05224,0,0,1-2.47193-8.38972L50.34158,58.8607a8.0212,8.0212,0,0,1,4.62655-5.1091,175.85349,175.85349,0,0,1,29.66439-9.18283,8.0178,8.0178,0,0,1,9.31924,5.28642l7.97318,23.91964" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></path>
-					</svg>
-				</span>
-				<span class="checkbox-label" style="font-size: 10px"><?php echo $row['Name']?></span>
-                <span class="checkbox-label" style="font-size: 10px">Dr. <?php echo $drname?></span>
-			</span>
-            </label>
-        </div>
         <?php
-        $i++;
-    }
-    ?>
-
-
-        </fieldset>
-    <button name="appsub" id=appsub" type="submit" class="continue-application">
-        <div>
-            <div class="pencil"></div>
-            <div class="folder">
-                <div class="top">
-                    <svg viewBox="0 0 24 27">
-                        <path d="M1,0 L23,0 C23.5522847,-1.01453063e-16 24,0.44771525 24,1 L24,8.17157288 C24,8.70200585 23.7892863,9.21071368 23.4142136,9.58578644 L20.5857864,12.4142136 C20.2107137,12.7892863 20,13.2979941 20,13.8284271 L20,26 C20,26.5522847 19.5522847,27 19,27 L1,27 C0.44771525,27 6.76353751e-17,26.5522847 0,26 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 Z"></path>
-                    </svg>
-                </div>
-                <div class="paper"></div>
+        $data = $application->GetAvailableLectures($conn);
+        $i = 1;
+        while($row = $data->fetch_assoc()):
+            $drname = $application->GetDoctorName($conn, $row['Course_ID']);
+            $courseId = $row['Course_Time_ID'];
+            ?>
+            <div class="checkbox">
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" class="checkbox-input" name="courses[]" value="<?= $courseId ?>">
+                    <span class="checkbox-tile">
+                        <span class="checkbox-icon"><i class="fa-solid fa-book"></i></span>
+                        <span class="checkbox-label" style="font-size: 10px"><?= $row['Name'] ?></span>
+                        <span class="checkbox-label" style="font-size: 10px">Dr. <?= $drname ?></span>
+                    </span>
+                </label>
             </div>
-        </div>
-        Continue Application
+            <?php
+            $i++;
+        endwhile;
+        ?>
+    </fieldset>
+
+    <button type="submit" class="continue-application">
+        <span>Continue Application</span>
     </button>
 </form>
 
+<!-- Modal -->
+<div class="modal" id="studentModal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <form id="fullApplicationForm" method="POST" action="./Controller/Add_Student.php">
+            <div class="form first">
+                <input type="hidden" name="Add_Student_Manual" value="1">
+                <div class="details personal">
+                    <span class="title">Personal Details</span>
+                    <div class="fields course_input">
+                        <div class="input-field">
+                            <label for="F_Name">First Name</label>
+                            <input name="F_Name" value="<?php if(isset($user_data)){ echo $user_data['F_Name'];} ?>" id="F_Name" type="text" placeholder="Enter First Name" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="M_Name">Middle Name</label>
+                            <input name="M_Name" value="<?php if(isset($user_data)){ echo $user_data['M_Name'];} ?>" id="M_Name" type="text" placeholder="Enter middle Name" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="L_Name">Last Name</label>
+                            <input name="L_Name" id="L_Name" value="<?php if(isset($user_data)){ echo $user_data['L_Name'];} ?>" type="text" placeholder="Enter Last Name" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="Email">Email</label>
+                            <input name="Email" id="Email" value="<?php if(isset($user_data)){ echo $user_data['Email'];} ?>" type="text" placeholder="Enter E-mail" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="Phone">Phone</label>
+                            <input name="Phone" id="Phone" value="<?php if(isset($user_data)){ echo $user_data['Phone'];} ?>" type="text" placeholder="Enter Phone" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="School_Name">School Name</label>
+                            <input name="School_Name" id="School_Name" value="<?php if(isset($user_data)){ echo $user_data['School_Name'];} ?>" type="text" placeholder="Enter School Name" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="Grade">Grade</label>
+                            <select id="Grade" name="Grade" required>
+                                <option disabled selected>Select grade</option>
+                                <option  <?php if(isset($user_data)){
+                                    if($user_data['Grade'] == 9){
+                                        echo "selected";
+                                    }
+                                } ?> value="9">9</option>
+                                <option <?php if(isset($user_data)){
+                                    if($user_data['Grade'] == 10){
+                                        echo "selected";
+                                    }
+                                } ?> value="10">10</option>
+                                <option <?php if(isset($user_data)){
+                                    if($user_data['Grade'] == 11){
+                                        echo "selected";
+                                    }
+                                } ?> value="11">11</option>
+                                <option <?php if(isset($user_data)){
+                                    if($user_data['Grade'] == 12){
+                                        echo "selected";
+                                    }
+                                } ?> value="12">12</option>
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <label for="Age">Age</label>
+                            <input name="Age" id="Age" type="number" value="<?php if(isset($user_data)){ echo $user_data['Age'];} ?>" placeholder="Enter Age" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="Relation_Name">Relation Name</label>
+                            <input name="Relation_Name" id="Relation_Name" value="<?php if(isset($user_data)){ echo $user_data['Relation_Name'];} ?>" type="text" placeholder="Enter Relation Name" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="Parent_Name">Parent Name</label>
+                            <input name="Parent_Name" id="Parent_Name" value="<?php if(isset($user_data)){ echo $user_data['Parent_Name'];} ?>" type="text" placeholder="Enter Relation Name" required>
+                        </div>
+                        <div class="input-field">
+                            <label for="Parent_Phone">Parent Phone</label>
+                            <input name="Parent_Phone" id="Parent_Phone" value="<?php if(isset($user_data)){ echo $user_data['Relation_Phone'];} ?>" type="text" placeholder="Enter Phone" required>
+                        </div>
+                </div>
+            </div>
+            <!-- Placeholder for course checkboxes -->
+            <div id="selectedCourses"></div>
 
-
-<div id="Selected" style="display: none">
+            <button name="appsub" type="submit" class="sumbit">Submit</button>
+        </form>
+    </div>
 </div>
-        <script>
-        function Addtolist(id) {
-            if (document.getElementById(id).checked) {
-                var liitem = document.createElement('li');
-                liitem.id = document.getElementById(id).value;
-                liitem.appendChild(document.createTextNode(document.getElementById(id).value));
-                document.getElementById('Selected').appendChild(liitem);
-            } else {
-                document.getElementById(document.getElementById(id).value).remove()
-            }
+
+<script>
+    function showModal() {
+        const selected = document.querySelectorAll('input[name="courses[]"]:checked');
+        if (selected.length === 0) {
+            Swal.fire("Please select at least one course");
+            return;
         }
 
-    </script>
-<script>
-    let error = (document.location.href).split("?");
-    error.shift();
-    const er = (error.toString()).split("&")
-    if(er[0] === "Timeconflict"){
-        sweetAlert("Oops...", "Some courses timings are conflicting", "error");
+        const container = document.getElementById("selectedCourses");
+        container.innerHTML = ""; // clear previous
+        selected.forEach((checkbox, index) => {
+            const hidden = document.createElement("input");
+            hidden.type = "hidden";
+            if (index == 0){
+                hidden.name = `Course`;
+            }else{
+                hidden.name = `Course${index}`;
+            }
+            hidden.value = checkbox.value;
+            container.appendChild(hidden);
+        });
+
+        // Also add count if needed by backend
+        const count = document.createElement("input");
+        count.type = "hidden";
+        count.name = "Course_Count";
+        count.value = selected.length;
+        container.appendChild(count);
+
+        document.getElementById("studentModal").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("studentModal").style.display = "none";
     }
 </script>
-<?php
-}
+<script>
+    window.onload = function () {
+        <?php if (isset($_GET['Time-Interferes'])): ?>
+        Swal.fire('Time Conflict', 'One or more courses have overlapping times.', 'error');
+        <?php elseif (isset($_GET['Success'])): ?>
+        Swal.fire('Application Submitted!', 'Your application has been successfully received.', 'success');
+        <?php elseif (isset($_GET['Email-Exist'])): ?>
+        Swal.fire('Email Already Exists', 'This email has already been used for an application.', 'warning');
+        <?php elseif (isset($_GET['Missing-Data'])): ?>
+        Swal.fire('Missing Data', 'Please select at least one course before continuing.', 'info');
+        <?php endif; ?>
+    };
+</script>
+</body>
+
+</html>

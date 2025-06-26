@@ -91,7 +91,12 @@ class Center
         }
     }
 
-
+    public function adminapprove(mysqli $conn, int $stuid)
+    {
+        $stmt = $conn->prepare("UPDATE student SET AdminApproval = '1' WHERE student.Student_ID = ?");
+        $stmt->bind_param("i", $stuid);
+        $stmt->execute();
+    }
 
     /**
      * @param mysqli $conn
@@ -816,11 +821,11 @@ public function OldExcelAttendanceReport(mysqli $conn, int $lecture_id, $year)
      * @param String $parent_name
      * @param String $relation_phone
      */
-    public function AddStudent(mysqli $conn, String $f_name, String $m_name, String $l_name, String $email, String $password, String $Phone, String $school_name, int $grade, int $age, String $relation_name, String $parent_name, String $relation_phone)
+    public function AddStudent(mysqli $conn, String $f_name, String $m_name, String $l_name, String $email, String $password, String $Phone, String $school_name, int $grade, int $age, String $relation_name, String $parent_name, String $relation_phone, bool $adminapproved = true)
     {
-        $stmt = $conn->prepare("INSERT INTO student (F_Name, M_Name, L_Name, Email, Password, Phone, School_Name, Grade, Age, Relation_Name, Parent_Name, Relation_Phone) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssiisss", $f_name, $m_name, $l_name, $email, $password, $Phone, $school_name, $grade, $age, $relation_name, $parent_name, $relation_phone);
+        $stmt = $conn->prepare("INSERT INTO student (F_Name, M_Name, L_Name, Email, Password, Phone, School_Name, Grade, Age, Relation_Name, Parent_Name, Relation_Phone, AdminApproval) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssiisssi", $f_name, $m_name, $l_name, $email, $password, $Phone, $school_name, $grade, $age, $relation_name, $parent_name, $relation_phone, $adminapproved);
         $stmt->execute();
     }
 
@@ -1465,7 +1470,8 @@ public function OldExcelAttendanceReport(mysqli $conn, int $lecture_id, $year)
     {
         $stmt = $conn->prepare("SELECT  time_table.User_ID FROM course_time
             LEFT JOIN time_table ON course_time.Course_Time_ID = time_table.Course_Time_ID
-            WHERE course_time.Course_Time_ID = ? AND time_table.User_ID NOT IN (SELECT attendance_list.User_ID FROM attendance_list WHERE attendance_list.Lecture_ID = ?)");
+           LEFT JOIN student ON time_table.User_ID = student.Student_ID
+            WHERE course_time.Course_Time_ID = ? AND student.AdminApproval = true AND time_table.User_ID NOT IN (SELECT attendance_list.User_ID FROM attendance_list WHERE attendance_list.Lecture_ID = ?)");
         $stmt->bind_param("ii", $course_time_id, $lecture_id);
         $stmt->execute();
         return $stmt->get_result();
@@ -1494,10 +1500,12 @@ public function OldExcelAttendanceReport(mysqli $conn, int $lecture_id, $year)
     {
         $course_time_id = $this->GetCourseIdByLectureID($conn, $lecture_id);
         $user_ids = $this->GetRemainingStudent($conn, $course_time_id, $lecture_id);
-        while($user_id = $user_ids->fetch_assoc()){
-            $stmt = $conn->prepare("INSERT INTO attendance_list (Lecture_ID, User_ID, Arrival_Time, State) VALUES (?, ?, NULL, 'ABSENT')");
-            $stmt->bind_param("ii", $lecture_id, $user_id['User_ID']);
-            $stmt->execute();
+        if ($user_ids && $user_ids->num_rows > 0) {
+            while ($user_id = $user_ids->fetch_assoc()) {
+                $stmt = $conn->prepare("INSERT INTO attendance_list (Lecture_ID, User_ID, Arrival_Time, State) VALUES (?, ?, NULL, 'ABSENT')");
+                $stmt->bind_param("ii", $lecture_id, $user_id['User_ID']);
+                $stmt->execute();
+            }
         }
     }
 

@@ -236,6 +236,9 @@ if(isset($conn) && isset($center) && ($center instanceof Center)){
                         <th>
                             <p>Resend Verification</p>
                         </th>
+                          <th>
+                            <p>Admin Approval</p>
+                        </th>
                         <th>
                             <p>Delete</p>
                         </th>
@@ -351,6 +354,11 @@ if(isset($conn) && isset($center) && ($center instanceof Center)){
                             <td class="att-show"  <?php if(isset($_GET['Year'])){echo'style="display: none"';}?>>
                                 <button  onclick="verigo(<?php echo $row['Student_ID'] ?>)"  <?php if($row['Verify'] == 1){ echo 'disabled';}?>>
                                     Send
+                                </button>
+                            </td>
+                            <td class="att-show"  <?php if(isset($_GET['Year'])){echo'style="display: none"';}?>>
+                                <button  onclick="veriad(<?php echo $row['Student_ID'] ?>)"  <?php if($row['AdminApproval'] == 1){ echo 'disabled';}?>>
+                                    Approve
                                 </button>
                             </td>
                             <td  <?php if(isset($_GET['Year'])){echo'style="display: none"';}?>>
@@ -518,6 +526,26 @@ window.addEventListener("load", () => {
         }
       };
       xhttp.open("GET", `https://brightside-edu.com/Controller/Student_Handling.php?Student_ID=${id}&Reverify_Student`, false);
+      xhttp.send();
+    }
+    function veriad(id) {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            //Create the element using the createElement method.
+            var myDiv = document.createElement("div");
+
+            //Set its unique ID.
+            myDiv.id = 'note';
+            myDiv.style.cssText = 'color:#fff';
+            //Add your content to the DIV
+            myDiv.innerHTML = "Approved!";
+
+            //Finally, append the element to the HTML body
+            document.body.appendChild(myDiv);
+        }
+      };
+      xhttp.open("GET", `https://brightside-edu.com/Controller/Student_Handling.php?Student_ID=${id}&admin_approve`, false);
       xhttp.send();
     }
     function Duplicate(id) {

@@ -59,7 +59,32 @@ session_start();
 if(isset($_SESSION['Center-Attendance-System-1'])){
     $center = unserialize($_SESSION['Center-Attendance-System-1']);
 }else{
-    header("Location: ../../index.php");
+    $center = new Center();
+    $email = new Email("CodeologyEdu@brightside-edu.com", "Codeology Education", "Codeologyedu@2022");
+    if(isset($_POST['Add_Student_Manual'])){
+        if(isset($_POST['Course'])){
+            if(!$center->CheckEmailExist($conn, $_POST['Email'])){
+                $fail = false;
+                $center->AddStudent($conn, $_POST['F_Name'], $_POST['M_Name'], $_POST['L_Name'], $_POST['Email'], $_POST['Phone'], $_POST['Phone'], $_POST['School_Name'], $_POST['Grade'], $_POST['Age'], $_POST['Relation_Name'], $_POST['Parent_Name'], $_POST['Parent_Phone'], false);
+                $email->SendStudentVerificationEmail($_POST['Email'],$_POST['F_Name'] . " " . $_POST['M_Name'] . " " . $_POST['L_Name'], $center->GetStudentID($conn, $_POST['Email']));
+                $fail = time_table_handle($center, $conn);
+                if($fail){
+                    header("Location: ../apply.php?Time-Interferes");
+                    exit;
+                }else{
+                    header("Location: ../apply.php?Success");
+                    exit;
+                }
+            }else{
+
+                header("Location: ../apply.php?Email-Exist");
+                exit;
+            }
+        }else{
+            header("Location: ../apply.php?Missing-Data");
+            exit;
+        }
+    }
 }
 if(isset($conn) && isset($center) && ($center instanceof Center)){
     $email = new Email("CodeologyEdu@brightside-edu.com", "Codeology Education", "Codeologyedu@2022");

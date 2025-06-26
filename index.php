@@ -46,138 +46,138 @@ if(isset($_SESSION['Parent-Attendance-System-1'])){
                     <input type="submit" name="Login-Form" class="submit-btn" value="Login">
                 </div>
             </form>
-            <div class="login slide-up">
-                <div class="center">
-                    <h2 class="form-title" id="login" style="padding-bottom: 250px;">New Student Application</h2>
-<!--                    <div id="div1" style="    height: 500px;-->
+<!--            <div class="login slide-up">-->
+<!--                <div class="center">-->
+<!--                    <h2 class="form-title" id="login" style="padding-bottom: 250px;">New Student Application</h2>-->
+<!--                   <div id="div1" style="    height: 500px;-->
 <!--    position: absolute;-->
 <!--    top: 100px;">-->
 <!--                        <div id="div2" style="max-height:100%;overflow:auto;border:1px solid red;">-->
 <!--                            <div id="div3" style="height:1500px;border:5px solid yellow;">hello</div>-->
 <!--                        </div>-->
-
-                    <div class="form-holder"  style="height: 320px; position: absolute; top: 50px; width: 100%; border:0px; overflow: auto; margin-left: auto; margin-right: auto;">
-                      <form action="Controller/newapp.php" method="POST">
-                        <!-- <h4 style="color: #174074; line-height: 20px;"><center>Registration hasn't opened yet!<br>Come Back Soon!</center></h4> -->
-                        <div class="row">
-                            <div class="col-half">
-                                <h4>Name</h4>
-                                <div class="input-group">
-                                    <input type="text" name="F_name" placeholder="First" required/>
-                                </div>
-                            </div>
-                            <div class="col-half">
-                                <h4 style="color: #fff;">Codeology</h4>
-                                <div class="input-group">
-                                    <input type="text" name="M_name" placeholder="Middle" required/>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group">
-                                    <input type="text" name="L_name" placeholder="Last Name" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-half">
-                                <h4>Email</h4>
-                                <div class="input-group">
-                                    <input type="text" name="email" placeholder="Email" required/>
-                                </div>
-                            </div>
-                            <div class="col-half">
-                                <h4>Phone #</h4>
-                                <div class="input-group">
-                                    <input type="text" name="Pnumb" placeholder="Phone Number" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-half">
-                                <h4>School Name</h4>
-                                <div class="input-group">
-                                    <input type="text" name="Sname" placeholder="School Name" required/>
-                                </div>
-                            </div>
-                            <div class="col-half">
-                                <h4>Grade & Age</h4>
-                                <div class="input-group">
-                                    <select name="Grade">
-                                        <option value="9">9</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                    </select>
-
-
-
-                                    <select name="Age">
-                                        <option value="14">14</option>
-                                        <option value="15">15</option>
-                                        <option value="16">16</option>
-                                        <option value="17">17</option>
-                                        <option value="18">18</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-half">
-                                <h4>Gaurdian Name</h4>
-                                <div class="input-group">
-                                    <input name="Gname" type="text" placeholder="Gaurdian Name" required/>
-                                </div>
-                            </div>
-                            <div class="col-half">
-                                <h4>Gaurdian relation</h4>
-                                <div class="input-group">
-                                    <select name="GType" style="width: 90%">
-                                        <option value="Mother">Mother</option>
-                                        <option value="Father">Father</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <h4>Gaurdian Phone #</h4>
-                                <div class="input-group">
-                                    <input name="Gpnumb" type="text" placeholder="Gaurdian phone #" required/>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <h4>Course</h4>
-                                <div class="input-group">
-                                    <select name="Course" style="width: 90%">
-                                        <option value="Accounting">Accounting</option>
-                                        <option value="Math">Maths</option>
-                                        <option value="Chemistry">Chemistry</option>
-                                        <option value="Physics">Physics</option>
-                                        <option value="Biology">Biology</option>
-                                        <option value="English">English</option>
-                                        <option value="French">French</option>
-                                        <option value="ICT">ICT</option>
-                                        <option value="Computer science">Computer science</option>
-                                        <option value="Combined science">Combined science</option>
-                                        <option value="Global prospective">Global prospective</option>
-                                        <option value="Business">Business</option>
-                                        <option value="Economics">Economics</option>
-                                        <option value="Sociology">Sociology</option>
-                                        <option value="Psychology">Psychology</option>
-                                    </select>
-                                </div>
-                            </div>
-                            </div>
-                        <input type="submit" id="new-stu-signup" name="new-stu-signup" class="submit-btn" value="Signup">
-                        </div>
-                    </form>
-                    </div>
-
-                    </div>
+<!---->
+<!--                    <div class="form-holder"  style="height: 320px; position: absolute; top: 50px; width: 100%; border:0px; overflow: auto; margin-left: auto; margin-right: auto;">-->
+<!--                      <form action="Controller/newapp.php" method="POST">-->
+<!--                         <h4 style="color: #174074; line-height: 20px;"><center>Registration hasn't opened yet!<br>Come Back Soon!</center></h4> -->
+<!--                        <div class="row">-->
+<!--                            <div class="col-half">-->
+<!--                                <h4>Name</h4>-->
+<!--                                <div class="input-group">-->
+<!--                                    <input type="text" name="F_name" placeholder="First" required/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-half">-->
+<!--                                <h4 style="color: #fff;">Codeology</h4>-->
+<!--                                <div class="input-group">-->
+<!--                                    <input type="text" name="M_name" placeholder="Middle" required/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col">-->
+<!--                                <div class="input-group">-->
+<!--                                    <input type="text" name="L_name" placeholder="Last Name" required/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-half">-->
+<!--                                <h4>Email</h4>-->
+<!--                                <div class="input-group">-->
+<!--                                    <input type="text" name="email" placeholder="Email" required/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-half">-->
+<!--                                <h4>Phone #</h4>-->
+<!--                                <div class="input-group">-->
+<!--                                    <input type="text" name="Pnumb" placeholder="Phone Number" required/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-half">-->
+<!--                                <h4>School Name</h4>-->
+<!--                                <div class="input-group">-->
+<!--                                    <input type="text" name="Sname" placeholder="School Name" required/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-half">-->
+<!--                                <h4>Grade & Age</h4>-->
+<!--                                <div class="input-group">-->
+<!--                                    <select name="Grade">-->
+<!--                                        <option value="9">9</option>-->
+<!--                                        <option value="10">10</option>-->
+<!--                                        <option value="11">11</option>-->
+<!--                                        <option value="12">12</option>-->
+<!--                                    </select>-->
+<!---->
+<!---->
+<!---->
+<!--                                    <select name="Age">-->
+<!--                                        <option value="14">14</option>-->
+<!--                                        <option value="15">15</option>-->
+<!--                                        <option value="16">16</option>-->
+<!--                                        <option value="17">17</option>-->
+<!--                                        <option value="18">18</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-half">-->
+<!--                                <h4>Gaurdian Name</h4>-->
+<!--                                <div class="input-group">-->
+<!--                                    <input name="Gname" type="text" placeholder="Gaurdian Name" required/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-half">-->
+<!--                                <h4>Gaurdian relation</h4>-->
+<!--                                <div class="input-group">-->
+<!--                                    <select name="GType" style="width: 90%">-->
+<!--                                        <option value="Mother">Mother</option>-->
+<!--                                        <option value="Father">Father</option>-->
+<!--                                        <option value="Other">Other</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col">-->
+<!--                                <h4>Gaurdian Phone #</h4>-->
+<!--                                <div class="input-group">-->
+<!--                                    <input name="Gpnumb" type="text" placeholder="Gaurdian phone #" required/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!---->
+<!--                        </div>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col">-->
+<!--                                <h4>Course</h4>-->
+<!--                                <div class="input-group">-->
+<!--                                    <select name="Course" style="width: 90%">-->
+<!--                                        <option value="Accounting">Accounting</option>-->
+<!--                                        <option value="Math">Maths</option>-->
+<!--                                        <option value="Chemistry">Chemistry</option>-->
+<!--                                        <option value="Physics">Physics</option>-->
+<!--                                        <option value="Biology">Biology</option>-->
+<!--                                        <option value="English">English</option>-->
+<!--                                        <option value="French">French</option>-->
+<!--                                        <option value="ICT">ICT</option>-->
+<!--                                        <option value="Computer science">Computer science</option>-->
+<!--                                        <option value="Combined science">Combined science</option>-->
+<!--                                        <option value="Global prospective">Global prospective</option>-->
+<!--                                        <option value="Business">Business</option>-->
+<!--                                        <option value="Economics">Economics</option>-->
+<!--                                        <option value="Sociology">Sociology</option>-->
+<!--                                        <option value="Psychology">Psychology</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            </div>-->
+<!--                        <input type="submit" id="new-stu-signup" name="new-stu-signup" class="submit-btn" value="Signup">-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                    </div>-->
+<!---->
+<!--                    </div>-->
                     </div>
                 </div>
             </div>

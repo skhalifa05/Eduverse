@@ -27,6 +27,9 @@ if(isset($conn) && isset($center) && ($center instanceof Center)){
           }else{
               header("Location: ../Views/PHP/Center_Student_List.php");
           }
+    }elseif(isset($_GET['admin_approve'])){
+          $center->adminapprove($conn, $_GET['Student_ID']);
+            header("Location: ../Views/PHP/Center_Student_List.php?stat=OK");
     }elseif(isset($_GET['Duplicate']) and isset($_GET['Year'])){
         echo $_GET['Student_ID'];
         $stuname = $center->GetOldsName($conn, $_GET['Student_ID'],$_GET['Year']);

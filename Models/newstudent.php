@@ -45,4 +45,14 @@ class Newstudent{
         $stmt = $stmt->get_result();
         return $stmt->fetch_assoc();
     }
+
+    public function GetAvailableLectures(mysqli $conn):mysqli_result
+    {
+        $stmt = $conn->prepare("SELECT courses.Name,courses.Course_ID,course_time.Day,course_time.Time,course_time.Period,course_time.Course_Time_ID
+            FROM course_time 
+            LEFT JOIN courses ON courses.Course_ID = course_time.Course_ID
+            WHERE courses.stat != '0';");
+        $stmt->execute();
+        return $stmt->get_result();
+    }
 }

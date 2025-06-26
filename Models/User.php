@@ -94,7 +94,7 @@ class User{
      */
     private function CheckInStudentTable(mysqli $conn, String $email, String $pass):bool
     {
-        $stmt = $conn->prepare("SELECT * FROM student WHERE student.Email = ? && student.Password = ?");
+        $stmt = $conn->prepare("SELECT * FROM student WHERE student.Email = ? && student.Password = ? && AdminApproval = true");
         $stmt->bind_param("ss", $email,$pass);
         $stmt->execute();
         $results = $stmt->get_result();
